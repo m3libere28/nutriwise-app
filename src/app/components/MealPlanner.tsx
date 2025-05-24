@@ -9,10 +9,12 @@ interface MealPlannerProps {
   template?: MealTemplate | null;
 }
 
+type MealType = 'breakfast' | 'lunch' | 'dinner' | 'snack';
+
 interface Meal {
   id: string;
   name: string;
-  type: 'breakfast' | 'lunch' | 'dinner' | 'snack';
+  type: MealType;
   calories: number;
   protein: number;
   carbs: number;
@@ -26,7 +28,7 @@ interface DayPlan {
   meals: Meal[];
 }
 
-const createMeal = (name: string, type: 'breakfast' | 'lunch' | 'dinner' | 'snack'): Meal => ({
+const createMeal = (name: string, type: MealType): Meal => ({
   id: Math.random().toString(),
   name,
   type,
@@ -38,47 +40,17 @@ const createMeal = (name: string, type: 'breakfast' | 'lunch' | 'dinner' | 'snac
   instructions: ''
 });
 
-const mockMeals: Meal[] = [
-  {
-    id: '1',
-    name: 'Greek Yogurt Parfait',
-    type: 'breakfast',
-    calories: 320,
-    protein: 15,
-    carbs: 45,
-    fat: 8,
-    ingredients: ['Greek yogurt', 'Mixed berries', 'Granola', 'Honey'],
-    instructions: 'Layer yogurt, berries, and granola. Drizzle with honey.'
-  },
-  {
-    id: '2',
-    name: 'Grilled Chicken Salad',
-    type: 'lunch',
-    calories: 450,
-    protein: 35,
-    carbs: 20,
-    fat: 12,
-    ingredients: ['Chicken breast', 'Mixed greens', 'Cherry tomatoes', 'Olive oil', 'Balsamic vinegar'],
-    instructions: 'Grill chicken, chop vegetables, toss with dressing.'
-  },
-  {
-    id: '3',
-    name: 'Salmon with Quinoa',
-    type: 'dinner',
-    calories: 580,
-    protein: 42,
-    carbs: 35,
-    fat: 18,
-    ingredients: ['Salmon fillet', 'Quinoa', 'Broccoli', 'Lemon', 'Olive oil'],
-    instructions: 'Bake salmon, cook quinoa, steam broccoli.'
-  }
-];
+const mockMeals = [
+  createMeal('Greek Yogurt Parfait', 'breakfast'),
+  createMeal('Grilled Chicken Salad', 'lunch'),
+  createMeal('Salmon with Quinoa', 'dinner')
+] as const;
 
 export function MealPlanner({ template }: MealPlannerProps) {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [meals, setMeals] = useState<Record<string, Meal[]>>(() => {
+  const [meals, setMeals] = useState<{ [key: string]: Meal[] }>(() => {
     if (template?.meals) {
-      const initialMeals: Record<string, Meal[]> = {};
+      const initialMeals: { [key: string]: Meal[] } = {};
       const weekDates = getWeekDates(new Date());
       
       weekDates.forEach((date) => {
