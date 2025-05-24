@@ -26,6 +26,18 @@ interface DayPlan {
   meals: Meal[];
 }
 
+const createMeal = (name: string, type: 'breakfast' | 'lunch' | 'dinner' | 'snack'): Meal => ({
+  id: Math.random().toString(),
+  name,
+  type,
+  calories: 0,
+  protein: 0,
+  carbs: 0,
+  fat: 0,
+  ingredients: [],
+  instructions: ''
+});
+
 const mockMeals: Meal[] = [
   {
     id: '1',
@@ -71,52 +83,13 @@ export function MealPlanner({ template }: MealPlannerProps) {
       
       weekDates.forEach((date) => {
         const dateStr = date.toISOString().split('T')[0];
-        initialMeals[dateStr] = [
-          ...(template.meals.breakfast?.map(name => ({
-            id: Math.random().toString(),
-            name,
-            type: 'breakfast' as const,
-            calories: 0,
-            protein: 0,
-            carbs: 0,
-            fat: 0,
-            ingredients: [],
-            instructions: '',
-          })) || []),
-          ...(template.meals.lunch?.map(name => ({
-            id: Math.random().toString(),
-            name,
-            type: 'lunch' as const,
-            calories: 0,
-            protein: 0,
-            carbs: 0,
-            fat: 0,
-            ingredients: [],
-            instructions: '',
-          })) || []),
-          ...(template.meals.dinner?.map(name => ({
-            id: Math.random().toString(),
-            name,
-            type: 'dinner' as const,
-            calories: 0,
-            protein: 0,
-            carbs: 0,
-            fat: 0,
-            ingredients: [],
-            instructions: '',
-          })) || []),
-          ...(template.meals.snacks?.map(name => ({
-            id: Math.random().toString(),
-            name,
-            type: 'snack' as const,
-            calories: 0,
-            protein: 0,
-            carbs: 0,
-            fat: 0,
-            ingredients: [],
-            instructions: '',
-          })) || []),
+        const typedMeals: Meal[] = [
+          ...(template.meals.breakfast?.map(name => createMeal(name, 'breakfast')) || []),
+          ...(template.meals.lunch?.map(name => createMeal(name, 'lunch')) || []),
+          ...(template.meals.dinner?.map(name => createMeal(name, 'dinner')) || []),
+          ...(template.meals.snacks?.map(name => createMeal(name, 'snack')) || [])
         ];
+        initialMeals[dateStr] = typedMeals;
       });
       
       return initialMeals;
