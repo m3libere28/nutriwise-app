@@ -75,7 +75,7 @@ export function MealPlanner({ template }: MealPlannerProps) {
           ...(template.meals.breakfast?.map(name => ({
             id: Math.random().toString(),
             name,
-            type: 'breakfast',
+            type: 'breakfast' as const,
             calories: 0,
             protein: 0,
             carbs: 0,
@@ -86,7 +86,7 @@ export function MealPlanner({ template }: MealPlannerProps) {
           ...(template.meals.lunch?.map(name => ({
             id: Math.random().toString(),
             name,
-            type: 'lunch',
+            type: 'lunch' as const,
             calories: 0,
             protein: 0,
             carbs: 0,
@@ -97,7 +97,7 @@ export function MealPlanner({ template }: MealPlannerProps) {
           ...(template.meals.dinner?.map(name => ({
             id: Math.random().toString(),
             name,
-            type: 'dinner',
+            type: 'dinner' as const,
             calories: 0,
             protein: 0,
             carbs: 0,
@@ -108,7 +108,7 @@ export function MealPlanner({ template }: MealPlannerProps) {
           ...(template.meals.snacks?.map(name => ({
             id: Math.random().toString(),
             name,
-            type: 'snack',
+            type: 'snack' as const,
             calories: 0,
             protein: 0,
             carbs: 0,
